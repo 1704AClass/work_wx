@@ -3,14 +3,14 @@ package com.itheima.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.itheima.constant.MessageConstant;
+import com.itheima.entity.PageResult;
+import com.itheima.entity.QueryPageBean;
+import com.itheima.entity.Result;
 import com.itheima.pojo.CheckGroup;
 import com.itheima.pojo.CheckItem;
 import com.itheima.service.CheckGroupService;
 import com.itheima.service.CheckItemService;
 
-import entity.PageResult;
-import entity.QueryPageBean;
-import entity.Result;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +32,7 @@ public class CheckGroupController {
     private CheckGroupService checkGroupService;
 
     /**
-     * 检查项新增
+     * 检查组新增
      */ 
     @RequestMapping("/add")
     public Result add(@RequestBody CheckGroup checkGroup,Integer[] checkItemId) {
@@ -46,7 +46,7 @@ public class CheckGroupController {
     }
     
     /**
-     * 检查项分页查询
+     * 检查组分页查询
      */ 
     @RequestMapping("/findPage")
     public PageResult findPage(@RequestBody QueryPageBean queryPageBean) {
@@ -55,7 +55,7 @@ public class CheckGroupController {
     }
 
     /**
-     * 检查项删除
+     * 检查组删除
      */ 
     @RequestMapping("/delete")
     public Result delete(Integer id) {
@@ -69,12 +69,12 @@ public class CheckGroupController {
     }
 
     /**
-     * 检查项批量编辑
+     * 检查组批量编辑
      */
     @RequestMapping("/edit")
-    public Result edit(@RequestBody CheckGroup checkGroup) {
+    public Result edit(@RequestBody CheckGroup checkGroup,Integer[] checkItemId) {
         try {
-        	checkGroupService.edit(checkGroup);
+        	checkGroupService.edit(checkGroup,checkItemId);
         } catch (Exception e) {
             return new Result(false, MessageConstant.EDIT_CHECKITEM_FAIL);
         }
@@ -82,7 +82,21 @@ public class CheckGroupController {
     }
 
     /**
-     * 检查项批量编辑回显
+     * 检查组中间表查询
+     */
+    @RequestMapping("/findCheckItemIdsAndCheckGroupId")
+    public Result findCheckItemIdsAndCheckGroupId(Integer id) {
+    	try {
+        	List<Integer> checkItemIds = checkGroupService.findCheckItemIdsAndCheckGroupId(id);
+            return new Result(true, MessageConstant.QUERY_CHECKITEM_SUCCESS, checkItemIds);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, MessageConstant.QUERY_CHECKITEM_FAIL);
+        }
+	}
+    
+    /**
+     * 检查组批量编辑回显
      */
     @RequestMapping("/findById")
     public Result findById(Integer id) {

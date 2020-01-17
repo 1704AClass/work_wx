@@ -24,7 +24,6 @@ public interface CheckItemMapper {
 	/**
      * 检查项删除
      */
-	@Delete("delete from t_checkitem where id=#{id}")
 	void dels(Integer id);
 	/**
      * 检查项批量编辑
@@ -41,5 +40,9 @@ public interface CheckItemMapper {
      */
 	@Select("select * from t_checkitem")
 	List<CheckItem> findAll();
+	/**
+     * 中间表删除
+     */
+	void deleteAssocication(Integer id);
 	
 }

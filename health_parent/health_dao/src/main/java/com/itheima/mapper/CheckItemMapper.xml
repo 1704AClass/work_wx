@@ -10,4 +10,10 @@
  			where code = #{value} or name=#{value}
  		</if>
  	</select>
+ 	<delete id="dels" parameterType="Integer">
+ 		delete from t_checkitem where id=#{id}
+ 	</delete>
+ 	<delete id="deleteAssocication" parameterType="int">
+ 		delete from t_checkgroup_checkitem where checkitem_id=#{id}
+ 	</delete>
  </mapper>

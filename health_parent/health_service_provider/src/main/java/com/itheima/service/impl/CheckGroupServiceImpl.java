@@ -9,12 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.itheima.entity.PageResult;
+import com.itheima.entity.QueryPageBean;
 import com.itheima.mapper.CheckGroupMapper;
 import com.itheima.pojo.CheckGroup;
 import com.itheima.service.CheckGroupService;
 
-import entity.PageResult;
-import entity.QueryPageBean;
+
 
 @Service
 public class CheckGroupServiceImpl implements CheckGroupService{
@@ -25,19 +26,14 @@ public class CheckGroupServiceImpl implements CheckGroupService{
 	@Override
 	public CheckGroup findById(Integer id) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void edit(CheckGroup checkGroup) {
-		// TODO Auto-generated method stub
-		
+		return checkGroupmapper.findById(id);
 	}
 
 	@Override
 	public void dels(Integer id) {
 		// TODO Auto-generated method stub
-		
+		checkGroupmapper.delsCheckGroupIdAndCheckitemId(id);
+		checkGroupmapper.dels(id);
 	}
 
 	@Override
@@ -68,7 +64,27 @@ public class CheckGroupServiceImpl implements CheckGroupService{
 		checkGroupmapper.add(checkGroup);
 		//用mybaits获取主键自动生成的id
 		Integer checkGroupId = checkGroup.getId();
+		this.updateCheckGroupIdAndCheckitemId(checkGroupId, checkItemId);
+	}
+
+	@Override
+	public List<Integer> findCheckItemIdsAndCheckGroupId(Integer id) {
+		// TODO Auto-generated method stub
+		return checkGroupmapper.findCheckItemIdsAndCheckGroupId(id);
+	}
+
+	@Override
+	public void edit(CheckGroup checkGroup, Integer[] checkItemId) {
+		// TODO Auto-generated method stub
+		checkGroupmapper.edit(checkGroup);
+		checkGroupmapper.deleteAssocication(checkGroup.getId());
+		Integer checkGroupId = checkGroup.getId();
 		//用比较
+		this.updateCheckGroupIdAndCheckitemId(checkGroupId, checkItemId);
+	}
+	
+	//共同方法抽取
+	public void updateCheckGroupIdAndCheckitemId(Integer checkGroupId,Integer[] checkItemId) {
 		if(checkGroupId!=null && checkItemId!=null && checkItemId.length>0){
 			//循环前台传过来的数组
 			for (Integer checkitemId : checkItemId) {

@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.itheima.entity.PageResult;
+import com.itheima.entity.QueryPageBean;
 import com.itheima.mapper.CheckItemMapper;
 import com.itheima.pojo.CheckItem;
 import com.itheima.service.CheckItemService;
 
-import entity.PageResult;
-import entity.QueryPageBean;
+
 
 @Service
 public class CheckItemServiceImpl implements CheckItemService{
@@ -29,6 +30,8 @@ public class CheckItemServiceImpl implements CheckItemService{
 	@Override
 	public void delete(Integer id) {
 		// TODO Auto-generated method stub
+		System.out.println(id);
+		checkItemMapper.deleteAssocication(id);
 		checkItemMapper.dels(id);
 	}
 
@@ -71,6 +74,7 @@ public class CheckItemServiceImpl implements CheckItemService{
 	@Override
 	public void dels(Integer[] ids) {
 		for (Integer id : ids) {
+			checkItemMapper.deleteAssocication(id);
 			checkItemMapper.dels(id);
 		}
 	}

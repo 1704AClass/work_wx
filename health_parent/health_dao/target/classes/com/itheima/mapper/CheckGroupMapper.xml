@@ -19,4 +19,19 @@
  		</selectKey>
  		insert into t_checkgroup set code=#{code},name=#{name},helpCode=#{helpCode},remark=#{remark},attention=#{attention}
  	</insert>
+ 	<delete id="dels" parameterType="Integer">
+ 		delete from t_checkgroup where id=#{id}
+ 	</delete>
+ 	<select id="findById" parameterType="Integer" resultType="com.itheima.pojo.CheckGroup">
+ 		select * from t_checkgroup where id=#{id}
+ 	</select>
+ 	<select id="findCheckItemIdsAndCheckGroupId" parameterType="int" resultType="int">
+ 		select checkitem_id from t_checkgroup_checkitem where checkgroup_id=#{id}
+ 	</select>
+ 	<update id="edit" parameterType="com.itheima.pojo.CheckGroup">
+ 		update t_checkgroup set code=#{code},name=#{name},helpCode=#{helpCode},remark=#{remark},attention=#{attention} where id=#{id}
+ 	</update>
+ 	<delete id="deleteAssocication" parameterType="int">
+ 		delete from t_checkgroup_checkitem where checkgroup_id=#{id}
+ 	</delete>
  </mapper>
